@@ -35,19 +35,34 @@ interface Report {
 // Implementar SalesReport e InventoryReport
 
 class SalesReport implements Report {
-  // TODO: implementar el método e imprimir en consola:
+  generate(): void {
+    console.log(`Generando el reporte de %cventas`, COLORS.green);
+    
+  }
   // 'Generando reporte de ventas...'
 }
 
 class InventoryReport implements Report {
-  // TODO: implementar el método e imprimir en consola:
+  generate(): void {
+    console.log(`Generando el reporte de %cinventario`, COLORS.cyan);
+
+  }
   // 'Generando reporte de inventario...'
 }
+
+class ReclamacionesReport implements Report {
+  generate(): void {
+    console.log(`Generando el reporte de %cReclamaciones`, COLORS.blue);
+
+  }
+  // 'Generando reporte de inventario...'
+}
+
 
 // 3. Clase Base ReportFactory con el Método Factory
 
 abstract class ReportFactory {
-  abstract createReport(): Report;
+  protected abstract createReport(): Report;
 
   generateReport(): void {
     const report = this.createReport();
@@ -58,15 +73,22 @@ abstract class ReportFactory {
 // 4. Clases Concretas de Fábricas de Reportes
 
 class SalesReportFactory extends ReportFactory {
-  createReport(): Report {
-    throw new Error('Method not implemented.');
+  override createReport(): Report {
+    return new SalesReport();
   }
 }
 
 class InventoryReportFactory extends ReportFactory {
-  createReport(): Report {
-    throw new Error('Method not implemented.');
+  override createReport(): Report {
+    return new InventoryReport()
   }
+}
+
+class ReclamacionesReportFactory extends ReportFactory {
+  override createReport(): Report {
+    return new ReclamacionesReport();
+  }
+
 }
 
 // 5. Código Cliente para Probar
@@ -75,14 +97,23 @@ function main() {
   let reportFactory: ReportFactory;
 
   const reportType = prompt(
-    '¿Qué tipo de reporte deseas? %c(sales/inventory)',
+    '¿Qué tipo de reporte deseas? %c(sales/inventory/reclamacion)',
     COLORS.red
   );
 
-  if (reportType === 'sales') {
-    reportFactory = new SalesReportFactory();
-  } else {
-    reportFactory = new InventoryReportFactory();
+  switch (reportType) {
+    case 'sales':
+      reportFactory = new SalesReportFactory();
+      break;
+    case 'invetory':
+      reportFactory = new InventoryReportFactory();
+      break;
+    case 'reclamacion':
+      reportFactory = new ReclamacionesReportFactory();
+      break;
+  
+    default:
+      throw new Error(`Please write one the options correct`);
   }
 
   reportFactory.generateReport();
