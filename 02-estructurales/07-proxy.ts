@@ -11,6 +11,8 @@
  *
  */
 
+import { COLORS } from "../helpers/colors.ts";
+
 
 
 // Interface
@@ -49,9 +51,9 @@ class SecretRoom implements Room {
 
 class MagicPortal  implements Room{
     
-    private secreRoom: SecretRoom;
+    private secreRoom: Room;
 
-    constructor( room: SecretRoom ) {
+    constructor( room: Room ) {
         this.secreRoom = room;
     }
 
@@ -66,4 +68,22 @@ class MagicPortal  implements Room{
     }
 
 }
+
+
+
+function main() {
+
+    const portal = new MagicPortal( new SecretRoom() );
+    const player = new Player('Jhon', 5);
+    const player2 = new Player('Anel', 15);
+
+    console.log(`%cPlayer 1 intenta entrar al portal`, COLORS.blue);
+    portal.enter(player);
+
+    console.log(`%cPlayer 2 intenta entrar al portal`, COLORS.blue);
+    portal.enter(player2);
+}
+
+
+main();
 
